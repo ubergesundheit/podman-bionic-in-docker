@@ -33,3 +33,13 @@ RUN cp $GOPATH/src/github.com/opencontainers/runc/runc /usr/bin/runc
 
 RUN make -C $GOPATH/src/github.com/containers/libpod
 RUN make -C $GOPATH/src/github.com/containers/libpod install PREFIX=/usr
+
+RUN mkdir -p /etc/containers
+RUN curl https://raw.githubusercontent.com/projectatomic/registries/master/registries.fedora -o /etc/containers/registries.conf
+RUN curl https://raw.githubusercontent.com/containers/skopeo/master/default-policy.json -o /etc/containers/policy.json
+
+RUN mkdir -p /etc/cni/net.d
+RUN curl -qsSL https://raw.githubusercontent.com/containers/libpod/master/cni/87-podman-bridge.conflist | tee /etc/cni/net.d/99-loopback.conf
+
+RUN git clone https://github.com/rootless-containers/slirp4netns.git
+RUN cd slirp4netns && ./autogen.sh && LDFLAGS=-static ./configure --prefix=/usr && make && make install

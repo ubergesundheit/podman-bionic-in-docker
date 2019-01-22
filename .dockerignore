@@ -1,5 +1,6 @@
 libexec
 podman
 runc
+slirp4netns
 .git
 

@@ -7,6 +7,7 @@ docker run --name podman -d podman:bionic
 docker cp podman:/usr/libexec .
 docker cp podman:/usr/bin/runc .
 docker cp podman:/usr/bin/podman .
+docker cp podman:/usr/bin/slirp4netns .
 
 sudo mkdir -p /etc/containers
 sudo curl https://raw.githubusercontent.com/projectatomic/registries/master/registries.fedora -o /etc/containers/registries.conf
@@ -18,3 +19,4 @@ sudo curl -qsSL https://raw.githubusercontent.com/containers/libpod/master/cni/8
 sudo cp -r libexec /usr/libexec
 sudo cp -r runc /usr/bin/runc
 sudo cp -r podman /usr/bin/podman
+sudo cp -r slirp4netns /usr/bin/slirp4netns
