@@ -1,4 +1,4 @@
-FROM buildpack-deps:bionic
+FROM buildpack-deps:bionic as build
 
 # Install go
 ENV PATH=$PATH:/usr/local/go/bin
@@ -43,3 +43,13 @@ RUN curl -qsSL https://raw.githubusercontent.com/containers/libpod/master/cni/87
 
 RUN git clone https://github.com/rootless-containers/slirp4netns.git
 RUN cd slirp4netns && ./autogen.sh && LDFLAGS=-static ./configure --prefix=/usr && make && make install
+
+FROM ubuntu:bionic
+
+COPY --from=build /usr/libexec /usr/libexec
+COPY --from=build /usr/bin/runc /usr/bin/runc
+COPY --from=build /usr/bin/podman /usr/bin/podman
+COPY --from=build /usr/bin/slirp4netns /usr/bin/slirp4netns
+
+COPY --from=build /etc/containers /etc/containers
+COPY --from=build /etc/cni/net.d /etc/cni/net.d

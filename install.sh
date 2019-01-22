@@ -1,8 +1,16 @@
 #!/bin/bash
 
-docker build -t podman:bionic .
+set -e
 
-docker run --name podman -d podman:bionic
+# # Build yourself
+
+# docker build -t podman:bionic .
+
+# docker run --name podman -d podman:bionic
+
+# Or use prebuilt image
+
+docker run --name podman -d quay.io/geraldpape/podman-bionic
 
 docker cp podman:/usr/libexec .
 docker cp podman:/usr/bin/runc .
